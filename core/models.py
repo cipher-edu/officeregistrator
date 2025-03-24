@@ -24,3 +24,17 @@ class Student(models.Model):
 
     def __str__(self):
         return self.full_name
+class Subject(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, verbose_name="Fan nomi")
+
+    def __str__(self):
+        return self.name
+
+class Grade(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    score = models.FloatField(verbose_name="Bahosi")
+    date = models.DateField(verbose_name="Sana")
+
+    def __str__(self):
+        return f"{self.subject.name} - {self.score}"

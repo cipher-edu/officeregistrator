@@ -1,5 +1,5 @@
 import requests
-from .models import Student  
+from .models import *  
 
 BASE_URL = "https://student.nspi.uz/rest/v1"
 
@@ -73,3 +73,48 @@ def save_student_to_db(login, password):
         print("❌ Token olinmadi!")
 
     return None
+
+#############################################################
+def get_student_subjects_and_grades(token):
+    """API orqali talabaning fanlari va baholarini olish"""
+    url = f"{BASE_URL}/account/subjects"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.get(url, headers=headers)
+    print(f"📌 Fanlar va baholar javobi: {response.status_code}, {response.text}")  # ✅ Tekshirish
+
+    if response.status_code == 200:
+        return response.json().get("data", [])
+    return None
+
+
+def save_student_subjects_and_grades(student):
+    """Talabaning fanlari va baholarini bazaga saqlash"""
+    if not student:
+        print("❌ Talaba topilmadi!")
+        return
+    
+    token = "YOUR_API_TOKEN"
+    subjects_data = get_student_subjects_and_grades(token)
+
+    if subjects_data:
+        for subject_data in subjects_data:
+            print(f"📌 Fan ma'lumotlari: {subject_data}")  # ✅ Ma'lumotlarni tekshirish
+
+            subject, created = Subject.objects.update_or_create(
+                student=student,
+                name=subject_data.get("subject_name")  # 🔴 API-da kalitni tekshirish kerak
+            )
+
+            for grade_data in subject_data.get("grades", []):
+                print(f"📌 Baholar: {grade_data}")  # ✅ Ma'lumotlarni tekshirish
+
+                Grade.objects.update_or_create(
+                    subject=subject,
+                    score=grade_data.get("score"),
+                    date=grade_data.get("date")
+                )
+        print("✅ Fanlar va baholar bazaga saqlandi!")

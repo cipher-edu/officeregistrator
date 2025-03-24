@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talaba Profil Sahifasi</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
         <div class="card shadow-lg p-4">
-            <h2 class="text-center">Talaba Ma'lumotlari</h2>
+            <h2 class="text-center">Talaba Profil Sahifasi</h2>
             <hr>
 
             {% if student %}
@@ -36,6 +36,49 @@
                     <tr><th>Kurs:</th><td>{{ student.level }}</td></tr>
                     <tr><th>Semestr:</th><td>{{ student.semester }}</td></tr>
                 </table>
+                <a href="{% url 'student_logout' %}" class="btn btn-danger w-100">Chiqish</a>
+            {% else %}
+                <p class="text-danger text-center">Talaba ma'lumotlari topilmadi.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h2 class="text-center">Talaba Profil Sahifasi</h2>
+            <hr>
+
+            {% if student %}
+                <h3 class="text-center">{{ student.full_name }}</h3>
+                <p class="text-center"><strong>Email:</strong> {{ student.email }}</p>
+
+                <h4 class="mt-4">📚 Fanlar va Baholar</h4>
+                {% if subjects %}
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Fan</th>
+                                <th>Baholar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject in subjects %}
+                                <tr>
+                                    <td>{{ subject.name }}</td>
+                                    <td>
+                                        {% for grade in subject.grade_set.all %}
+                                            {{ grade.score }} ({{ grade.date }})<br>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-danger">Foydalanuvchiga bog‘liq fanlar yoki baholar topilmadi.</p>
+                {% endif %}
+
+                <a href="{% url 'student_logout' %}" class="btn btn-danger w-100 mt-3">Chiqish</a>
             {% else %}
                 <p class="text-danger text-center">Talaba ma'lumotlari topilmadi.</p>
             {% endif %}
