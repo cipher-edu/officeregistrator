@@ -23,3 +23,4 @@ from django.shortcuts import render
 def student_dashboard(request):
     student = Student.objects.last()  # ✅ Eng oxirgi kirgan talabani olish
     return render(request, "dashboard.html", {"student": student})
+

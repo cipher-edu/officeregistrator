@@ -33,37 +33,7 @@ def get_student_info(token):
     else:
         return None
 
-# 3️⃣ Talabaning ma'lumotlarini saqlash
-# def save_student_to_db(login, password):
-#     print(f"✅ Login: {login}, Parol: {password}")
-#     token = get_student_token(login, password)
 
-#     if token:
-#         print("✅ Token olindi:", token)
-#         student_data = get_student_info(token)
-
-#         if student_data:
-#             print("✅ Talaba ma'lumotlari:", student_data)
-
-#             student, created = Student.objects.update_or_create(
-#                 student_id=student_data.get("student_id_number"),  # ✅ To‘g‘ri ID olish
-#                 defaults={
-#                     "full_name": student_data.get("full_name"),
-#                     "email": student_data.get("email"),
-#                     "phone": student_data.get("phone"),
-#                     "faculty": student_data.get("faculty", {}).get("name"),
-#                     "group": student_data.get("group", {}).get("name"),
-#                     "token": token,
-#                 }
-#             )
-#             print("✅ Ma'lumot bazaga saqlandi!")
-#             return student
-#         else:
-#             print("❌ Talaba ma'lumotlari API'dan kelmadi!")
-#     else:
-#         print("❌ Token olinmadi!")
-
-#     return None
 def save_student_to_db(login, password):
     token = get_student_token(login, password)
 

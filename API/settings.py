@@ -32,6 +32,7 @@ API_KEY = "vdOnRuIxrl6iSGImiC-ztAiS5hcpF5qhE7oRjSTT"
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
