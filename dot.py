@@ -1,45 +1,131 @@
 import requests
+import json
+from datetime import datetime
+from getpass import getpass
 
-BASE_URL = "https://student.nspi.uz/rest/v1"
+class HemisAPI:
+    def __init__(self):
+        self.base_url = "https://student.nspi.uz/rest/"  # URL ni tekshirib oling
+        self.session = requests.Session()
+        self.token = None
+        self.refresh_token = None
 
-# 1️⃣ Talaba login qilib token olish
-def get_student_token(login, password):
-    url = f"{BASE_URL}/auth/login"
-    data = {"login": login, "password": password}  # `login` ishlatildi
-    headers = {"Content-Type": "application/json"}
+    def login(self, username, password):
+        """Tizimga kirish"""
+        url = f"{self.base_url}v1/auth/login"
+        payload = {
+            "login": username,
+            "password": password
+        }
+        
+        try:
+            response = self.session.post(url, json=payload)
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            if data.get('success'):
+                self.token = data['data']['token']
+                self.refresh_token = response.cookies.get('refresh-token')
+                return True
+            else:
+                print(f"Xato: {data.get('error', 'Noma\'lum xato')}")  # Corrected without backslash issues
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            print(f"Tarmoq xatosi: {str(e)}")
+            return False
 
-    response = requests.post(url, json=data, headers=headers)
+    def get_account_info(self):
+        """Talaba ma'lumotlarini olish"""
+        if not self.token:
+            print("Avval tizimga kiring!")
+            return None
+            
+        url = f"{self.base_url}v1/account/me"
+        headers = {
+            "Authorization": f"Bearer {self.token}"
+        }
+        
+        try:
+            response = self.session.get(url, headers=headers)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Ma'lumotlarni olishda xato: {str(e)}")
+            return None
 
-    if response.status_code == 200:
-        token = response.json().get("data", {}).get("token")
-        return token
+    def get_schedule(self, week=None, semester=None):
+        """Dars jadvalini olish"""
+        if not self.token:
+            print("Avval tizimga kiring!")
+            return None
+            
+        url = f"{self.base_url}v1/education/schedule"
+        headers = {
+            "Authorization": f"Bearer {self.token}"
+        }
+        params = {}
+        
+        if week: params['week'] = week
+        if semester: params['semester'] = semester
+        
+        try:
+            response = self.session.get(url, headers=headers, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Jadvalni olishda xato: {str(e)}")
+            return None
+
+    def get_grades(self):
+        """Baholarni olish"""
+        if not self.token:
+            print("Avval tizimga kiring!")
+            return None
+            
+        url = f"{self.base_url}v1/education/performance"
+        headers = {
+            "Authorization": f"Bearer {self.token}"
+        }
+        
+        try:
+            response = self.session.get(url, headers=headers)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Baholarni olishda xato: {str(e)}")
+            return None
+
+if __name__ == "__main__":
+    print("HEMIS API Dasturi")
+    print("=" * 30)
+    
+    api = HemisAPI()
+    
+    # Kirish
+    username = input("ID raqam: ").strip()
+    password = getpass("Parol: ").strip()
+    
+    if api.login(username, password):
+        print("\nMuvaffaqiyatli kirish!")
+        
+        # Talaba ma'lumotlari
+        print("\nTalaba ma'lumotlari:")
+        account_info = api.get_account_info()
+        if account_info:
+            print(json.dumps(account_info, indent=2, ensure_ascii=False))
+        
+        # Dars jadvali
+        print("\nDars jadvali:")
+        schedule = api.get_schedule()
+        if schedule:
+            print(json.dumps(schedule, indent=2, ensure_ascii=False))
+        
+        # Baholar
+        print("\nBaholar:")
+        grades = api.get_grades()
+        if grades:
+            print(json.dumps(grades, indent=2, ensure_ascii=False))
     else:
-        return {"error": f"Xatolik: {response.status_code}, {response.text}"}
-
-# 2️⃣ Talabaning shaxsiy va akademik ma'lumotlarini olish
-def get_student_info(token):
-    url = f"{BASE_URL}/account/me"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return {"error": f"Xatolik: {response.status_code}, {response.text}"}
-
-# ✅ SHU YERGA HAQIQIY LOGIN VA PAROLNI KIRITING
-login = "353211100388"  # `username` emas, `login` ishlatilmoqda
-password = "3474710ja"
-
-token = get_student_token(login, password)
-
-if isinstance(token, str):
-    print("✅ TOKEN:", token)
-    student_info = get_student_info(token)
-    print("🎓 Talaba ma'lumotlari:", student_info)
-else:
-    print("❌ Xatolik:", token)
+        print("\nKirish amalga oshmadi. Iltimos, login va parolni tekshiring.")

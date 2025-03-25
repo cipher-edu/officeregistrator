@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Debts</title>
+</head>
+<body>
+    <h2>Academic Debts</h2>
+    <a href="{% url 'academic_debt_create' %}">Add New Debt</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Debt Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for debt in debts %}
+                <tr>
+                    <td>{{ debt.subject }}</td>
+                    <td>{{ debt.debt_amount }}</td>
+                    <td>{{ debt.retake_status }}</td>
+                    <td>
+                        <a href="{% url 'academic_debt_update' debt.id %}">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

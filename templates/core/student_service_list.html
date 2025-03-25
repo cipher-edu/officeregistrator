@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Services</title>
+</head>
+<body>
+    <h2>Student Services</h2>
+    <a href="{% url 'student_service_create' %}">Add New Service</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Request Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+                <tr>
+                    <td>{{ service.request_type }}</td>
+                    <td>{{ service.status }}</td>
+                    <td>
+                        <a href="{% url 'student_service_update' service.id %}">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

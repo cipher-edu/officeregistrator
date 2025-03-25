@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Services</title>
+</head>
+<body>
+    <h2>Finance Services</h2>
+    <a href="{% url 'finance_service_create' %}">Add New Service</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Service Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+                <tr>
+                    <td>{{ service.service_type }}</td>
+                    <td>{{ service.amount }}</td>
+                    <td>{{ service.status }}</td>
+                    <td>
+                        <a href="{% url 'finance_service_update' service.id %}">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
