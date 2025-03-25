@@ -61,9 +61,9 @@ def student_dashboard(request):
 
     if student_id:
         student = Student.objects.filter(student_id=student_id).first()
-        subjects = Subject.objects.filter(student=student)
+
     else:
         student = None
         subjects = []
 
-    return render(request, "dashboard.html", {"student": student, "subjects": subjects})
+    return render(request, "dashboard.html", {"student": student})
