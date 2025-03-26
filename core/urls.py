@@ -27,15 +27,15 @@ urlpatterns = [
 
     path('academic-debts/', views.academic_debt_list, name='academic_debt_list'),
     path('academic-debts/create/', views.academic_debt_create, name='academic_debt_create'),
-    path('academic-debts/update/<int:pk>/', views.academic_debt_update, name='academic_debt_update'),
+    path('academic-debts/update/<uuid:pk>/', views.academic_debt_update, name='academic_debt_update'),
 
     path('research-services/', views.research_service_list, name='research_service_list'),
     path('research-services/create/', views.research_service_create, name='research_service_create'),
-    path('research-services/update/<int:pk>/', views.research_service_update, name='research_service_update'),
+    path('research-services/update/<uuid:pk>/', views.research_service_update, name='research_service_update'),
 
     path('international-services/', views.international_service_list, name='international_service_list'),
     path('international-services/create/', views.international_service_create, name='international_service_create'),
-    path('international-services/update/<int:pk>/', views.international_service_update, name='international_service_update'),
+    path('international-services/update/<uuid:pk>/', views.international_service_update, name='international_service_update'),
 
     path('finance-services/', views.finance_service_list, name='finance_service_list'),
     path('finance-services/create/', views.finance_service_create, name='finance_service_create'),

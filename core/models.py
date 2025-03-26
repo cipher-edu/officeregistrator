@@ -60,9 +60,9 @@ class AcademicDebt(models.Model):
     subject = models.CharField(max_length=200, verbose_name="Fan")
     debt_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Qarz summasi")
     retake_status = models.CharField(max_length=50, default="pending", choices=[
-        ("pending", "Kutilmoqda"),
-        ("paid", "To‘langan"),
-        ("retaken", "Qayta topshirilgan"),
+        ("Kutilmoqda", "Kutilmoqda"),
+        ("To‘langan", "To‘langan"),
+        ("Qayta topshirilgan", "Qayta topshirilgan"),
     ])
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Yaratilgan sana")
 

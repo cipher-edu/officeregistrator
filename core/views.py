@@ -226,14 +226,22 @@ def finance_service_list(request):
     services = FinanceService.objects.filter(student__student_id=student_id)
     return render(request, 'core/finance_service_list.html', {'services': services})
 
+@login_required(login_url="student_login")
 def finance_service_create(request):
+    """Allow logged-in students to create a finance service request."""
+    student_id = request.session.get("student_id")
+    student = get_object_or_404(Student, student_id=student_id)
+
     if request.method == 'POST':
         form = FinanceServiceForm(request.POST)
         if form.is_valid():
-            form.save()
+            service = form.save(commit=False)
+            service.student = student  # Automatically associate the logged-in student
+            service.save()
             return redirect('finance_service_list')
     else:
         form = FinanceServiceForm()
+
     return render(request, 'core/finance_service_form.html', {'form': form})
 
 def finance_service_update(request, pk):

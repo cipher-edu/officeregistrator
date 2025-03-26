@@ -6,14 +6,16 @@
     <title>Research Services</title>
 </head>
 <body>
-    <h2>Research Services</h2>
-    <a href="{% url 'research_service_create' %}">Add New Service</a>
+    <h2>Ilmiy Xizmatlar</h2>
+    <a href="{% url 'research_service_create' %}">Yangi Xizmat Qo'shish</a>
     <table border="1">
         <thead>
             <tr>
-                <th>Service Type</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Xizmat Turi</th>
+                <th>Holati</th>
+                <th>Batafsil</th>
+                <th>So'rov Sanasi</th>
+                <th>Amallar</th>
             </tr>
         </thead>
         <tbody>
@@ -21,8 +23,10 @@
                 <tr>
                     <td>{{ service.service_type }}</td>
                     <td>{{ service.status }}</td>
+                    <td>{{ service.details }}</td>
+                    <td>{{ service.request_date }}</td>
                     <td>
-                        <a href="{% url 'research_service_update' service.id %}">Edit</a>
+                        <a href="{% url 'research_service_update' service.id %}">Tahrirlash</a>
                     </td>
                 </tr>
             {% endfor %}

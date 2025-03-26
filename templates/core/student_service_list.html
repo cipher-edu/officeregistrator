@@ -6,14 +6,16 @@
     <title>Student Services</title>
 </head>
 <body>
-    <h2>Student Services</h2>
-    <a href="{% url 'student_service_create' %}">Add New Service</a>
+    <h2>Talaba Xizmatlari</h2>
+    <a href="{% url 'student_service_create' %}">Yangi Xizmat Qo'shish</a>
     <table border="1">
         <thead>
             <tr>
-                <th>Request Type</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>So'rov Turi</th>
+                <th>Holati</th>
+                <th>Javob</th>
+                <th>So'rov Sanasi</th>
+                <th>Amallar</th>
             </tr>
         </thead>
         <tbody>
@@ -21,8 +23,10 @@
                 <tr>
                     <td>{{ service.request_type }}</td>
                     <td>{{ service.status }}</td>
+                    <td>{{ service.response }}</td>
+                    <td>{{ service.request_date }}</td>
                     <td>
-                        <a href="{% url 'student_service_update' service.id %}">Edit</a>
+                        <a href="{% url 'student_service_update' service.id %}">Tahrirlash</a>
                     </td>
                 </tr>
             {% endfor %}

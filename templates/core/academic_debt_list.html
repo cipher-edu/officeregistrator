@@ -6,15 +6,16 @@
     <title>Academic Debts</title>
 </head>
 <body>
-    <h2>Academic Debts</h2>
-    <a href="{% url 'academic_debt_create' %}">Add New Debt</a>
+    <h2>Akademik Qarzdorliklar</h2>
+    <a href="{% url 'academic_debt_create' %}">Yangi Qarzdorlik Qo'shish</a>
     <table border="1">
         <thead>
             <tr>
-                <th>Subject</th>
-                <th>Debt Amount</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Fan</th>
+                <th>Qarz Miqdori</th>
+                <th>Holati</th>
+                <th>So'rov Sanasi</th>
+                <th>Amallar</th>
             </tr>
         </thead>
         <tbody>
@@ -23,8 +24,9 @@
                     <td>{{ debt.subject }}</td>
                     <td>{{ debt.debt_amount }}</td>
                     <td>{{ debt.retake_status }}</td>
+                    <td>{{ debt.created_at }}</td>
                     <td>
-                        <a href="{% url 'academic_debt_update' debt.id %}">Edit</a>
+                        <a href="{% url 'academic_debt_update' debt.id %}">Tahrirlash</a>
                     </td>
                 </tr>
             {% endfor %}
